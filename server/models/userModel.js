@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema({
         required: [true, 'please enter password']
     },
     dob: {
-        type: Date,
+        type: String,
         required: [true, 'please enter DOB']
     },
     gender: {

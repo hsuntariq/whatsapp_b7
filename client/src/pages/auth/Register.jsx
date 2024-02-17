@@ -1,12 +1,12 @@
 import React from 'react'
 import Header from '../../components/Header'
-import RegForm from './RegForm'
+import LogForm from './LogForm'
 
 const Register = () => {
     return (
         <>
             <Header />
-            <RegForm />
+            <LogForm />
         </>
     )
 }
