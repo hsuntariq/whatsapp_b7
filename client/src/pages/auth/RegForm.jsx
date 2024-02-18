@@ -1,12 +1,38 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap';
 import { IoClose } from "react-icons/io5";
 import { toast } from 'react-toastify';
-
+import { useDispatch, useSelector } from 'react-redux'
+import { registerUser, reset } from '../../features/authentication/authSlice';
+import { useNavigate } from 'react-router-dom'
 const RegForm = ({ setShow }) => {
+    const dispatch = useDispatch()
+    const d = new Date();
+    const y = d.getFullYear()
+    const navigate = useNavigate()
+    // get the state
+
+    const { user, isLoading, isSuccess, isError, message } = useSelector(state => state.auth);
+
+
+    useEffect(() => {
+        if (isError) {
+            toast.error(message)
+        }
+
+        if (isSuccess) {
+            navigate('/home')
+        }
+
+
+
+        dispatch(reset())
+
+    }, [isError, dispatch, isSuccess])
+
 
     const [formFields, setFormFields] = useState({
-        f_name: '', l_name: '', email: '', password: '', confirm_pass: '', date: '', month: '', year: '', gender: ''
+        f_name: '', l_name: '', email: '', password: '', confirm_pass: '', date: '1', month: 'Jan', year: `${y}`, gender: ''
     })
 
     // destructure
@@ -42,19 +68,17 @@ const RegForm = ({ setShow }) => {
         }))
     }
 
+    const [dob, setDOB] = useState(
+        `${date} - ${month} - ${year}`
+    )
 
     const handleRegister = (e) => {
         e.preventDefault()
 
-        if (!f_name || !l_name || !email || !password || !confirm_pass || !date || !month || !year || !gender) {
-            toast.error('Please enter all the fields')
+        const data = {
+            f_name, l_name, email, dob, password, gender
         }
-
-        else if (password !== confirm_pass) {
-            toast.error('Passwords do not match')
-        } else {
-            toast.success('Welcome')
-        }
+        dispatch(registerUser(data))
     }
 
 
