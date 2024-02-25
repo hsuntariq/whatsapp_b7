@@ -4,6 +4,9 @@ import Register from './pages/auth/Register';
 import Home from './pages/home/Home';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-loading-skeleton/dist/skeleton.css'
+import './globals.css'
+import Main from './pages/home/messagePanel/Main';
 function App() {
   return (
     <>
@@ -12,6 +15,8 @@ function App() {
         <Routes>
           <Route path='/' element={<Register />} />
           <Route path='/home' element={<Home />} />
+          <Route path='/home/message-panel/:id' element={<Main />} />
+          <Route path='*' element="No Page exists" />
         </Routes>
       </Router>
     </>

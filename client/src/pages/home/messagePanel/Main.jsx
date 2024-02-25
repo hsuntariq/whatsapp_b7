@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { Col, Row } from 'react-bootstrap'
-import Sidebar from './sidebar/Sidebar'
-import Welcome from './Welcome'
-const Home = () => {
+import { Row, Col } from 'react-bootstrap'
+import MessageScreen from './MessageScreen'
+import Sidebar from '../sidebar/Sidebar'
+
+const Main = () => {
     const [darkMode, setDarkMode] = useState(false)
     return (
         <>
@@ -11,11 +12,11 @@ const Home = () => {
                     <Sidebar darkMode={darkMode} setDarkMode={setDarkMode} />
                 </Col>
                 <Col className='p-0' xl={9} lg={8} md={7}>
-                    <Welcome />
+                    <MessageScreen />
                 </Col>
             </Row>
         </>
     )
 }
 
-export default Home
+export default Main

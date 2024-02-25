@@ -1,0 +1,19 @@
+body{
+    overflow:hidden;
+}
+
+::placeholder{
+    color: gray !important;
+}
+
+.modes{
+    cursor: pointer;
+}
+
+.text{
+    opacity: 0;
+}
+
+.modes:hover .text{
+    opacity: 1;
+}
