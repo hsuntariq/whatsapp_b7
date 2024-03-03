@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: false }))
 connect()
 
 app.use('/api/user/', require('./routes/userRoutes'))
+app.use('/api/chats/', require('./routes/chatRoutes'))
 app.use(handler)
 
 app.listen(process.env.PORT, () => console.log(`server is running on port:${process.env.PORT.blue}`))

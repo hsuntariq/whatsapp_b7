@@ -1,6 +1,6 @@
 input:focus{
     box-shadow: 0 0 0 0 !important;
-    border: none !important;
+    /* border: none !important; */
 }
 
 ::-webkit-scrollbar{
