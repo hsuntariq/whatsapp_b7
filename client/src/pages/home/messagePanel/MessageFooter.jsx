@@ -8,9 +8,10 @@ import { useParams } from 'react-router-dom';
 import { addChatMessage } from '../../../features/chats/chatSlice';
 import { ClockLoader } from 'react-spinners';
 
-const MessageFooter = () => {
+
+const MessageFooter = ({ sendMessage, setMessage, message }) => {
     const [active, setActive] = useState(false)
-    const [message, setMessage] = useState('')
+
     const { chatLoading, chatSuccess, chatError } = useSelector(state => state.chat)
 
     // get the user from the state/redux
@@ -36,18 +37,13 @@ const MessageFooter = () => {
     }
 
 
-    const sendMessage = (e) => {
-        e.preventDefault();
-        const chatData = {
-            sender_id: user?._id, receiver_id: id, message
-        }
-
-        dispatch(addChatMessage(chatData))
-        setMessage('')
 
 
 
-    }
+
+
+
+
 
 
     return (
