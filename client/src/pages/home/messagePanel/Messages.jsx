@@ -22,7 +22,6 @@ const Messages = ({ allMessages }) => {
                         </>
                     )
                 })} */}
-
                 {allMessages.map((msg, index) => {
                     return (
                         <>

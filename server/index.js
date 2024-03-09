@@ -28,16 +28,20 @@ const io = new Server(server, {
 // the moment user enter the app, it should connect to the socket server
 
 io.on("connection", (socket) => {
-    console.log(`User Connected:${socket.id.blue}`)
+    console.log(`user connected on host id:${socket.id.blue}`);
+    // join room
+    socket.on("join_room", (data) => {
+        socket.join(data.roomID);
+    });
 
+    socket.on("send_message", (data) => {
+        const roomSize = io.sockets.adapter.rooms.get(data.roomID)?.size || 0;
+        console.log(`Users in room ${data.roomID}: ${roomSize}`);
+        // Emit "received_message" event to all users in the room
+        socket.broadcast.emit("received_message", data);
+    });
 
-    socket.on('send_message', (data) => {
-        // console.log(data)
-        socket.broadcast.emit('received_message', data)
-    })
-
-
-})
+});
 
 
 

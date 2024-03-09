@@ -16,6 +16,7 @@ const MessageScreen = () => {
 
     const { id } = useParams()
     const { allUsers, user } = useSelector(state => state.auth);
+    const { chats } = useSelector(state => state.chat);
     const [message, setMessage] = useState('')
     const [sentMessages, setSentMessages] = useState([]);
     const [receivedMessages, setReceivedMessages] = useState([])
@@ -39,7 +40,7 @@ const MessageScreen = () => {
             sender_id: user?._id, receiver_id: id, message
         }
         // for the backend
-        socket.emit('send_message', { message })
+        socket.emit('send_message', { message, roomID: chats?._id })
         // for frontend display
         setSentMessages([...sentMessages, { message, sent: true, sortID: Date.now() }])
 
@@ -52,8 +53,9 @@ const MessageScreen = () => {
 
     useEffect(() => {
         socket.on('received_message', (data) => {
-            setReceivedMessages([...receivedMessages, { message: data.message, sent: false, sortID: Date.now() }])
+            setReceivedMessages([...receivedMessages, { message: data.message, sent: false, sortID: Date.now(), roomID: chats?._id }])
         })
+
     }, [receivedMessages])
 
     const allMessages = [...sentMessages, ...receivedMessages].sort((a, b) => {

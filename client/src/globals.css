@@ -1,19 +1,31 @@
-body{
-    overflow:hidden;
+body {
+    overflow: hidden;
 }
 
-::placeholder{
+::placeholder {
     color: gray !important;
 }
 
-.modes{
+.modes {
     cursor: pointer;
 }
 
-.text{
+.text {
     opacity: 0;
 }
 
-.modes:hover .text{
+.modes:hover .text {
     opacity: 1;
+}
+
+.list-menu {
+    transition: all 0.5s;
+}
+
+ul {
+    transition: all 0.3s;
+}
+
+.list-menu:hover {
+    background: rgb(36, 32, 32);
 }

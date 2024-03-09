@@ -3,15 +3,22 @@ import { FaUser } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { addChatData } from '../../../features/chats/chatSlice';
-
+import io from 'socket.io-client'
+const socket = io.connect('http://localhost:3001')
 const SingleUser = ({ _id, f_name, l_name, image, darkMode }) => {
     const dispatch = useDispatch()
     const { user } = useSelector(state => state.auth);
+    const { chats } = useSelector(state => state.chat)
     const handleAddChat = () => {
         const userData = {
             receiver_id: _id, sender_id: user?._id
         }
         dispatch(addChatData(userData))
+
+
+        socket.emit('join_room', { roomID: chats?._id })
+
+
     }
     return (
         <>
