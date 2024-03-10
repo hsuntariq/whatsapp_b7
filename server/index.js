@@ -32,13 +32,26 @@ io.on("connection", (socket) => {
     // join room
     socket.on("join_room", (data) => {
         socket.join(data.roomID);
-    });
-
-    socket.on("send_message", (data) => {
+        console.log(`room joined:${data.roomID?.cyan}`)
         const roomSize = io.sockets.adapter.rooms.get(data.roomID)?.size || 0;
         console.log(`Users in room ${data.roomID}: ${roomSize}`);
+    });
+
+    // handle typing
+
+    socket.on('typing', (data) => {
+        socket.to(data.roomID).emit('show_typing', data)
+    })
+    socket.on('leave', (data) => {
+        socket.to(data.roomID).emit('left', data)
+    })
+
+
+    socket.on("send_message", (data) => {
+        console.log(data)
+        socket.to(data.roomID).emit('received_message', data)
+
         // Emit "received_message" event to all users in the room
-        socket.broadcast.emit("received_message", data);
     });
 
 });

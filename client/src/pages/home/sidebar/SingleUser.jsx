@@ -16,7 +16,6 @@ const SingleUser = ({ _id, f_name, l_name, image, darkMode }) => {
         dispatch(addChatData(userData))
 
 
-        socket.emit('join_room', { roomID: chats?._id })
 
 
     }

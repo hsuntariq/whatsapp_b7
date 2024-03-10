@@ -5,6 +5,15 @@ const Messages = ({ allMessages }) => {
     const { chats } = useSelector(state => state.chat);
     const { user } = useSelector(state => state.auth);
 
+    const filteredMessage = () => {
+        const myMessages = allMessages.filter((msgs) => {
+            return msgs.roomID === chats?._id
+        })
+
+        return myMessages
+    }
+
+
     return (
         <>
             <div style={{
@@ -22,7 +31,7 @@ const Messages = ({ allMessages }) => {
                         </>
                     )
                 })} */}
-                {allMessages.map((msg, index) => {
+                {filteredMessage()?.map((msg, index) => {
                     return (
                         <>
                             <p key={index} style={{ width: 'max-content' }} className={`${msg.sent ? 'bg-success ms-auto' : 'bg-secondary me-auto'} text-white px-3 py-1 rounded-pill `}>

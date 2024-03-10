@@ -13,7 +13,7 @@ const socket = io.connect('http://localhost:3001')
 
 const MessageScreen = () => {
     const dispatch = useDispatch()
-
+    const [typing, setTyping] = useState();
     const { id } = useParams()
     const { allUsers, user } = useSelector(state => state.auth);
     const { chats } = useSelector(state => state.chat);
@@ -42,7 +42,7 @@ const MessageScreen = () => {
         // for the backend
         socket.emit('send_message', { message, roomID: chats?._id })
         // for frontend display
-        setSentMessages([...sentMessages, { message, sent: true, sortID: Date.now() }])
+        setSentMessages([...sentMessages, { message, sent: true, sortID: Date.now(), roomID: chats?._id }])
 
         dispatch(addChatMessage(chatData))
         setMessage('')
@@ -56,11 +56,39 @@ const MessageScreen = () => {
             setReceivedMessages([...receivedMessages, { message: data.message, sent: false, sortID: Date.now(), roomID: chats?._id }])
         })
 
-    }, [receivedMessages])
+    })
 
     const allMessages = [...sentMessages, ...receivedMessages].sort((a, b) => {
         return a.sortID - b.sortID;
     })
+
+
+    const setRoom = () => {
+        socket.emit('join_room', { roomID: chats?._id })
+    }
+
+
+    const handleInput = () => {
+        setRoom();
+        socket.emit('typing', { typing: true, roomID: chats?._id })
+    }
+
+    const handleLeave = () => {
+        socket.emit('leave', { typing: false, roomID: chats?._id })
+    }
+
+    useEffect(() => {
+        socket.on('show_typing', () => {
+            setTyping(true)
+        })
+
+        socket.on('left', () => {
+            setTyping(false)
+        })
+
+
+
+    }, [socket])
 
 
 
@@ -73,9 +101,9 @@ const MessageScreen = () => {
                 backgroundSize: 'contain',
                 backgroundPosition: 'center center'
             }}>
-                <MessageHeader displayUserInfo={displayUserInfo} />
+                <MessageHeader typing={typing} displayUserInfo={displayUserInfo} />
                 <Messages allMessages={allMessages} />
-                <MessageFooter sendMessage={sendMessage} message={message} setMessage={setMessage} />
+                <MessageFooter handleLeave={handleLeave} handleInput={handleInput} setRoom={setRoom} displayUserInfo={displayUserInfo} sendMessage={sendMessage} message={message} setMessage={setMessage} />
             </div>
         </>
     )

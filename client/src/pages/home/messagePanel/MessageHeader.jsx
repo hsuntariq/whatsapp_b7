@@ -6,7 +6,7 @@ import { TbBrandStorytel } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-const MessageHeader = ({ displayUserInfo }) => {
+const MessageHeader = ({ displayUserInfo, typing }) => {
 
     // destructure
     // const { f_name, l_name } = displayUserInfo()
@@ -21,7 +21,10 @@ const MessageHeader = ({ displayUserInfo }) => {
                     <div className="image rounded-circle bg-secondary  p-2 ">
                         <FaUser className='fs-2 text-white ' />
                     </div>
-                    <h5 className='text-capitalize'>{`${displayUserInfo()?.f_name} ${displayUserInfo()?.l_name}`}</h5>
+                    <div className="flex flex-column">
+                        <h5 className='text-capitalize'>{`${displayUserInfo()?.f_name} ${displayUserInfo()?.l_name}`}</h5>
+                        {typing && 'Typing...'}
+                    </div>
                 </div>
 
                 <div className="d-flex gap-4 fs-4">

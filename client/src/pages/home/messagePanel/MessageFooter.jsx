@@ -10,20 +10,19 @@ import { ClockLoader } from 'react-spinners';
 import ImagePanel from './ImagePanel';
 
 
-const MessageFooter = ({ sendMessage, setMessage, message }) => {
+const MessageFooter = ({ sendMessage, setRoom, setMessage, handleInput, handleLeave, message, displayUserInfo }) => {
     const [show, setShow] = useState(false);
     const [showPanel, setShowPanel] = useState(false)
     const [active, setActive] = useState(false)
     const [imagePreview, setImagePreview] = useState(null);
     const [image, setImage] = useState(null);
-
-
+    const inp = useRef();
+    const { id } = useParams();
     const { chatLoading, chatSuccess, chatError } = useSelector(state => state.chat)
-
+    const [imageLoading, setImageLoading] = useState(false)
     // get the user from the state/redux
     const { user } = useSelector(state => state.auth)
     // get the id from the url
-    const { id } = useParams()
 
     // get the dispatch to dispatch the functions
 
@@ -52,12 +51,53 @@ const MessageFooter = ({ sendMessage, setMessage, message }) => {
         const file = e.target.files[0]
         const imageURL = URL.createObjectURL(file);
         setImagePreview(imageURL)
+        setImage(file)
     }
 
 
 
 
+    useEffect(() => {
+        inp.current.focus();
+        setRoom()
+    }, [id, displayUserInfo()?.f_name])
 
+
+
+    // username = dyxoufsb0
+    // upload_preset = xola95pc
+
+
+    const handleImageUpload = async (e) => {
+        const data = new FormData();
+        data.append('file', image);
+        data.append('upload_preset', 'xola95pc');
+
+        try {
+            setImageLoading(true)
+            const res = await fetch('https://api.cloudinary.com/v1_1/dyxoufsb0/image/upload', {
+                method: 'POST',
+                body: data
+            })
+
+            const imageObject = await res.json();
+            setImageLoading(false)
+            setImagePreview(null);
+            setImage(null)
+            return imageObject.url
+
+
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
+
+    const handleImageClick = async () => {
+        const data = await handleImageUpload(image)
+
+    }
 
 
 
@@ -91,7 +131,7 @@ const MessageFooter = ({ sendMessage, setMessage, message }) => {
                         <BsEmojiGrin size={25} />
                     </div>
                     <form className='w-100 d-flex align-items-center'>
-                        <input value={message} onChange={handleChange}
+                        <input onClick={handleInput} onBlur={handleLeave} ref={inp} value={message} onChange={handleChange}
                             type="text" placeholder='Type a message...' className="form-control w-100" />
 
                     </form>
@@ -105,7 +145,7 @@ const MessageFooter = ({ sendMessage, setMessage, message }) => {
 
                     </div>
                 </div>
-                <ImagePanel imagePreview={imagePreview} />
+                <ImagePanel imageLoading={imageLoading} handleImageClick={handleImageClick} setImagePreview={setImagePreview} imagePreview={imagePreview} />
             </div>
         </>
     )
