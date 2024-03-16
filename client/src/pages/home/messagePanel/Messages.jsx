@@ -14,6 +14,7 @@ const Messages = ({ allMessages }) => {
     }
 
 
+
     return (
         <>
             <div style={{
@@ -34,9 +35,30 @@ const Messages = ({ allMessages }) => {
                 {filteredMessage()?.map((msg, index) => {
                     return (
                         <>
-                            <p key={index} style={{ width: 'max-content' }} className={`${msg.sent ? 'bg-success ms-auto' : 'bg-secondary me-auto'} text-white px-3 py-1 rounded-pill `}>
-                                {msg.message}
-                            </p>
+                            {msg.sent ? (
+                                <p className="bg-success p-3 text-white ms-auto rounded-3" style={{ width: 'max-content' }}>
+                                    {msg?.image && (
+                                        <div className='position-relative'>
+                                            <img
+                                                width={"200px"}
+                                                height={"200px"}
+                                                className="aspect-square object-cover"
+                                                src={msg.image}
+                                            />
+
+                                        </div>
+
+
+                                    )}
+                                    {msg.message}
+                                </p>
+                            ) : (
+                                <p className="bg-secondary p-3 text-white me-auto rounded-3" style={{ width: 'max-content' }}>
+                                    {msg.image && <img src={msg.image} height={200} width={200} style={{ objectFit: 'cover' }} />}
+                                    {msg.message}
+                                </p>
+                            )}
+
                         </>
                     )
                 })}

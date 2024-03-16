@@ -51,16 +51,16 @@ const MessageScreen = () => {
 
     }
 
-    useEffect(() => {
-        socket.on('received_message', (data) => {
-            setReceivedMessages([...receivedMessages, { message: data.message, sent: false, sortID: Date.now(), roomID: chats?._id }])
-        })
-
-    })
 
     const allMessages = [...sentMessages, ...receivedMessages].sort((a, b) => {
         return a.sortID - b.sortID;
     })
+    useEffect(() => {
+        socket.on('received_message', (data) => {
+            setReceivedMessages([...receivedMessages, { message: data.message, sent: false, sortID: Date.now(), roomID: chats?._id, image: data.image }])
+        })
+        console.log(sentMessages)
+    }, [receivedMessages])
 
 
     const setRoom = () => {
@@ -103,7 +103,7 @@ const MessageScreen = () => {
             }}>
                 <MessageHeader typing={typing} displayUserInfo={displayUserInfo} />
                 <Messages allMessages={allMessages} />
-                <MessageFooter handleLeave={handleLeave} handleInput={handleInput} setRoom={setRoom} displayUserInfo={displayUserInfo} sendMessage={sendMessage} message={message} setMessage={setMessage} />
+                <MessageFooter sentMessages={sentMessages} setSentMessages={setSentMessages} handleLeave={handleLeave} handleInput={handleInput} setRoom={setRoom} displayUserInfo={displayUserInfo} sendMessage={sendMessage} message={message} setMessage={setMessage} />
             </div>
         </>
     )

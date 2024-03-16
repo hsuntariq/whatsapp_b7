@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-loading-skeleton/dist/skeleton.css'
 import './globals.css'
 import Main from './pages/home/messagePanel/Main';
+import Audio from './Audio';
 function App() {
   return (
     <>
@@ -17,6 +18,7 @@ function App() {
           <Route path='/home' element={<Home />} />
           <Route path='/home/message-panel/:id' element={<Main />} />
           <Route path='*' element="No Page exists" />
+          <Route path='/audio' element={<Audio />} />
         </Routes>
       </Router>
     </>

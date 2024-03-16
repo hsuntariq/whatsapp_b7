@@ -8,9 +8,10 @@ import { useParams } from 'react-router-dom';
 import { addChatMessage } from '../../../features/chats/chatSlice';
 import { ClockLoader } from 'react-spinners';
 import ImagePanel from './ImagePanel';
+import io from 'socket.io-client'
+const socket = io.connect('http://localhost:3001')
 
-
-const MessageFooter = ({ sendMessage, setRoom, setMessage, handleInput, handleLeave, message, displayUserInfo }) => {
+const MessageFooter = ({ sendMessage, setSentMessages, setRoom, sentMessages, setMessage, handleInput, handleLeave, message, displayUserInfo }) => {
     const [show, setShow] = useState(false);
     const [showPanel, setShowPanel] = useState(false)
     const [active, setActive] = useState(false)
@@ -18,7 +19,7 @@ const MessageFooter = ({ sendMessage, setRoom, setMessage, handleInput, handleLe
     const [image, setImage] = useState(null);
     const inp = useRef();
     const { id } = useParams();
-    const { chatLoading, chatSuccess, chatError } = useSelector(state => state.chat)
+    const { chatLoading, chatSuccess, chatError, chats } = useSelector(state => state.chat)
     const [imageLoading, setImageLoading] = useState(false)
     // get the user from the state/redux
     const { user } = useSelector(state => state.auth)
@@ -96,7 +97,8 @@ const MessageFooter = ({ sendMessage, setRoom, setMessage, handleInput, handleLe
 
     const handleImageClick = async () => {
         const data = await handleImageUpload(image)
-
+        socket.emit('send_message', { image: data, message })
+        setSentMessages([...sentMessages, { image: data, message, sortID: Date.now(), roomID: chats?._id, sent: true }])
     }
 
 
