@@ -29,3 +29,49 @@ ul {
 .list-menu:hover {
     background: rgb(36, 32, 32);
 }
+
+
+.anim {
+    position: relative;
+
+}
+
+
+.anim::before {
+
+    content: '';
+    background-color: rgba(0, 255, 0, 0.6);
+    font-size: 4rem;
+    height: 70px;
+    width: 70px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    animation: pulse 0.8s linear infinite alternate-reverse;
+}
+
+.anim::after {
+
+    content: '';
+    background-color: rgba(0, 255, 0, 0.8);
+    font-size: 4rem;
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    animation: pulse 0.8s linear infinite alternate-reverse;
+    animation-delay: 1s;
+
+}
+
+
+@keyframes pulse {
+    to {
+        transform: translate(-50%, -50%) scale(1.4);
+    }
+}

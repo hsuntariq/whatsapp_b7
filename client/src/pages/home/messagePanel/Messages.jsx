@@ -1,28 +1,28 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React from "react";
+import { useSelector } from "react-redux";
 
-const Messages = ({ allMessages }) => {
-    const { chats } = useSelector(state => state.chat);
-    const { user } = useSelector(state => state.auth);
+const Messages = ({ allMessages, audioBlob }) => {
+    const { chats } = useSelector((state) => state.chat);
+    const { user } = useSelector((state) => state.auth);
 
     const filteredMessage = () => {
         const myMessages = allMessages.filter((msgs) => {
-            return msgs.roomID === chats?._id
-        })
+            return msgs.roomID === chats?._id;
+        });
 
-        return myMessages
-    }
-
-
+        return myMessages;
+    };
 
     return (
         <>
-            <div style={{
-                height: "80%",
-                top: '10%',
-                overflowY: 'scroll'
-            }} className="position-absolute w-100 px-2">
-
+            <div
+                style={{
+                    height: "80%",
+                    top: "10%",
+                    overflowY: "scroll",
+                }}
+                className="position-absolute w-100 px-2"
+            >
                 {/* {chats?.chats?.map((chat, index) => {
                     return (
                         <>
@@ -36,38 +36,59 @@ const Messages = ({ allMessages }) => {
                     return (
                         <>
                             {msg.sent ? (
-                                <p className="bg-success p-3 text-white ms-auto rounded-3" style={{ width: 'max-content' }}>
+                                <p
+                                    className="bg-success p-3 text-white ms-auto rounded-3"
+                                    style={{ width: "max-content" }}
+                                >
                                     {msg?.image && (
-                                        <div className='position-relative'>
+                                        <div className="position-relative">
                                             <img
                                                 width={"200px"}
                                                 height={"200px"}
                                                 className="aspect-square object-cover"
-                                                src={msg.image}
+                                                src={msg?.image}
                                             />
-
                                         </div>
-
-
                                     )}
+
+                                    {msg?.voice &&
+                                        <audio controls>
+                                            <source src={URL.createObjectURL(msg?.voice)} />
+                                        </audio>
+                                    }
+
+
                                     {msg.message}
                                 </p>
                             ) : (
-                                <p className="bg-secondary p-3 text-white me-auto rounded-3" style={{ width: 'max-content' }}>
-                                    {msg.image && <img src={msg.image} height={200} width={200} style={{ objectFit: 'cover' }} />}
+                                <p
+                                    className="bg-secondary p-3 text-white me-auto rounded-3"
+                                    style={{ width: "max-content" }}
+                                >
+                                    {msg?.image && (
+                                        <img
+                                            src={msg?.image}
+                                            height={200}
+                                            width={200}
+                                            style={{ objectFit: "cover" }}
+                                        />
+                                    )}
+
+                                    {msg?.voice &&
+                                        <audio controls>
+                                            <source src={URL.createObjectURL(new Blob([msg.voice]))} />
+                                        </audio>
+                                    }
+
                                     {msg.message}
                                 </p>
                             )}
-
                         </>
-                    )
+                    );
                 })}
-
-
             </div>
-
         </>
-    )
-}
+    );
+};
 
-export default Messages
+export default Messages;

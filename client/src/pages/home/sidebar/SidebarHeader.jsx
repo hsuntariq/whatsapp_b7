@@ -6,8 +6,11 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoSunnyOutline } from "react-icons/io5";
 import { useSelector } from 'react-redux';
 
-const SidebarHeader = ({ darkMode, setDarkMode }) => {
+const SidebarHeader = ({ darkMode, setDarkMode, setShow }) => {
     const { user } = useSelector(state => state.auth)
+    const showSidebar = () => {
+        setShow(true)
+    }
     return (
         <>
             <div style={{
@@ -16,7 +19,7 @@ const SidebarHeader = ({ darkMode, setDarkMode }) => {
             }} className="d-flex p-2 ps-4  align-items-center justify-content-between">
                 <div className="d-flex align-items-center gap-3">
 
-                    <div className="image p-2 rounded-circle bg-secondary ">
+                    <div onClick={showSidebar} className="image p-2 rounded-circle bg-secondary ">
                         <FaUser className='fs-2 text-white ' />
                     </div>
                     <h5>{user?.f_name}</h5>
