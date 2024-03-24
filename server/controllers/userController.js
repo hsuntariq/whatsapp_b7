@@ -77,9 +77,29 @@ const getUsers = AsyncHandler(async (req, res) => {
 
 
 
+const updateInfo = AsyncHandler(async (req, res) => {
+    const { id, image, name, about } = req.body
+
+    const findUser = await User.findOne({ _id: id })
+    if (!findUser) {
+        res.status(404);
+        throw new Error('User not found')
+    } else {
+        findUser.image = image;
+        findUser.f_name = name;
+        findUser.about = about;
+        await findUser.save()
+    }
+
+    res.send(findUser)
+
+})
+
+
 
 module.exports = {
     registerUser,
     loginUser,
-    getUsers
+    getUsers,
+    updateInfo
 }

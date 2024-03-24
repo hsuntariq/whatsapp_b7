@@ -171,10 +171,10 @@ const MessageScreen = () => {
                 // make a blob
                 const blob = new Blob(chunks);
                 setAudioBlob(blob);
-                socket.emit("send_message", { voice: audioB, roomID: chats?._id });
+                socket.emit("send_message", { voice: blob, roomID: chats?._id });
                 setSentMessages([
                     ...sentMessages,
-                    { voice: audioBlob, sent: true, roomID: chats?._id, sortID: Date.now() },
+                    { voice: blob, sent: true, roomID: chats?._id, sortID: Date.now() },
                 ]);
             };
 

@@ -44,6 +44,15 @@ export const getUserData = createAsyncThunk('auth/get-users', async (_, thunkAPI
 })
 
 
+export const updateUserData = createAsyncThunk('auth/update-info', async (data, thunkAPI) => {
+    try {
+        return await authService.updateUser(data)
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.message)
+    }
+})
+
+
 
 
 
@@ -103,6 +112,19 @@ export const authSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.allUsers = action.payload;
+            })
+            .addCase(updateUserData.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(updateUserData.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload
+            })
+            .addCase(updateUserData.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.user = action.payload
             })
 
     }

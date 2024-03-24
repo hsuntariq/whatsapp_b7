@@ -26,9 +26,15 @@ const getUsers = async () => {
 }
 
 
+const updateUser = async (userData) => {
+    const response = await axios.post(`${base_url}/update-user`, userData)
+    return response.data
+}
+
 
 export const authService = {
     regUser,
     logUser,
-    getUsers
+    getUsers,
+    updateUser
 }

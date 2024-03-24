@@ -19,8 +19,14 @@ const SidebarHeader = ({ darkMode, setDarkMode, setShow }) => {
             }} className="d-flex p-2 ps-4  align-items-center justify-content-between">
                 <div className="d-flex align-items-center gap-3">
 
-                    <div onClick={showSidebar} className="image p-2 rounded-circle bg-secondary ">
-                        <FaUser className='fs-2 text-white ' />
+                    <div onClick={showSidebar} className="image rounded-circle bg-secondary ">
+                        {user?.image ? (
+                            <div className=" w-75 mx-auto" style={{ clipPath: 'circle()' }}>
+                                <img width="70px" className='rounded-circle' src={user?.image} alt="" />
+                            </div>
+                        ) : (
+                            <FaUser />
+                        )}
                     </div>
                     <h5>{user?.f_name}</h5>
                 </div>
